@@ -1,0 +1,30 @@
+.QuestionList{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.QuestionList h1 {
+    color: black;
+}
+
+.QuestionList ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.QuestionList li{
+    margin-bottom: 10px;
+}
+
+.QuestionList li a{
+    text-decoration: none;
+    color: black;
+}
+
+.QuestionList li a:hover {
+    color: blue;
+}

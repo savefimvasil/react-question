@@ -1,0 +1,11 @@
+.ActiveQuestion{
+    padding: 5px 20px;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.ActiveQuestion__title{
+    display: flex;
+    justify-content: space-between;
+}

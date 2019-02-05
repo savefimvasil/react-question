@@ -1,0 +1,18 @@
+.Question{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    /*background: linear-gradient(90deg, #5041b2, #7969e6);*/
+    background: #fff;
+}
+
+.Question h1{
+    color: #fff;
+    margin: 30px auto;
+}
+.QuestionWrapper{
+    width: 60%;
+    margin: 0 auto;
+}
