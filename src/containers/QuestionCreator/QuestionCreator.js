@@ -4,7 +4,8 @@ import Button from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
 import Select from '../../components/UI/Select/Select'
 import {createControl, validate, validateForm} from '../../form/formFramework'
-import axios from 'axios'
+import {connect} from "react-redux";
+import {createQuestionQuestion, finishCreateQuestion} from "../../store/actions/create";
 
 function createOptionControl(number) {
     return createControl({
@@ -27,14 +28,12 @@ function createFormControls() {
     }
 }
 
-export default class QuestionCreator extends Component{
+class QuestionCreator extends Component{
 
     state = {
-        question: [],
         isFormValid: false,
         correctAnswer: 1,
         formControls: createFormControls()
-
     }
 
     submitHandler = event => {
@@ -44,12 +43,9 @@ export default class QuestionCreator extends Component{
     addQuestionHandler = event => {
         event.preventDefault()
 
-        const question = this.state.question.concat()
-        const index = question.length + 1
-
         const  quiz = {
             question: this.state.formControls.question.value,
-            id: index,
+            id: this.props.question.length + 1,
             correctAnswer: this.state.correctAnswer,
             answers: [
                 {text: this.state.formControls.option1.value, id: this.state.formControls.option1.id},
@@ -58,31 +54,25 @@ export default class QuestionCreator extends Component{
                 {text: this.state.formControls.option4.value, id: this.state.formControls.option4.id},
             ]
         }
-        question.push(quiz)
+
+        this.props.createQuestionQuestion(quiz)
 
         this.setState({
-            question,
             isFormValid: false,
             correctAnswer: 1,
             formControls: createFormControls()
         })
     }
 
-    createQuestionHandler = async event => {
+    createQuestionHandler = event => {
         event.preventDefault()
 
-        try{
-            await axios.post('https://react-question.firebaseio.com/questions.json', this.state.question)
-            this.setState({
-                question: [],
-                isFormValid: false,
-                correctAnswer: 1,
-                formControls: createFormControls()
-            })
-        }
-        catch (e) {
-            console.log(e)
-        }
+        this.setState({
+            isFormValid: false,
+            correctAnswer: 1,
+            formControls: createFormControls()
+        })
+        this.props.finishCreateQuestion()
     }
 
     renderControls() {
@@ -160,7 +150,7 @@ export default class QuestionCreator extends Component{
                         <Button
                             type={'success'}
                             onClick={this.createQuestionHandler}
-                            disabled={this.state.question.length === 0}
+                            disabled={this.props.question.length === 0}
                         >
                             Create Test
                         </Button>
@@ -170,3 +160,18 @@ export default class QuestionCreator extends Component{
         )
     }
 }
+
+function mapStateToProps(state) {
+    return{
+        question: state.create.question
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return{
+        createQuestionQuestion: item => dispatch(createQuestionQuestion(item)),
+        finishCreateQuestion: () => dispatch(finishCreateQuestion())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCreator)
